@@ -216,7 +216,7 @@ if __name__ == "__main__":
     # Initialize and run the server
     pg_uri = get_pg_uri_from_args()
     print("Starting postgresql mcp server...")
-    mcp.run(transport='sse')
+    mcp.run(transport='streamable-http')
 
 
 

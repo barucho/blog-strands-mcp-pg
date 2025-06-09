@@ -2,7 +2,7 @@ from strands import Agent
 from strands.models import BedrockModel
 # for using MCP 
 from strands.tools.mcp import MCPClient
-from mcp.client.sse import sse_client
+from mcp.client.streamable_http import streamablehttp_client
 import logging
 def main():
     # Create a BedrockModel
@@ -14,7 +14,7 @@ def main():
     # we will use simple sse connection option 
     # Connect to an MCP server using SSE transport
     try:
-        sse_mcp_client = MCPClient(lambda: sse_client("http://localhost:8000/sse"))
+        streamable_http_mcp_client = MCPClient(lambda: streamablehttp_client("http://localhost:8000/mcp"))
     except Exception as e:
         logging.error(f"Failed to connect to MCP server: {e}")
         raise
@@ -25,8 +25,8 @@ def main():
     to connect to the database for performance and schema information
     when  
     """
-    with sse_mcp_client:
-        tools = sse_mcp_client.list_tools_sync()    
+    with streamable_http_mcp_client:
+        tools = streamable_http_mcp_client.list_tools_sync()    
         # create the agent 
         agent = Agent(system_prompt=system_prompt,model=bedrock_model,tools=tools)
         print(agent.model.config)
